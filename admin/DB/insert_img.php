@@ -65,7 +65,7 @@
         //정상적으로 수행 시 이쪽으로 진입, 파일이름 다시 검사 후 서버 경로에 업로드
         for ($i = 0; $i < $file_count; $i++) {
             if (isset($_FILES['file']['tmp_name']) && $_FILES['file']['name'] != '') {
-                $file_name[$i] = 'none_' .$_FILES['file']['name'][$i];
+                $file_name[$i] = 'none_'. $time['H'] .$time['i'] .$time['S'] .$_FILES['file']['name'][$i];
                 $img_route = 'http://localhost/intern/china_focus/admin/DB/'.$dir;
                 move_uploaded_file($_FILES['file']['tmp_name'][$i], './'.$dir .'/'. $file_name[$i]);
             }

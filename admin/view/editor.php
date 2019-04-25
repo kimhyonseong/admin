@@ -5,9 +5,6 @@
  * Date: 2019-04-12
  * Time: 오전 10:27
  */ ?>
-
-
-<!--먼저 표 열리고 누르면 인자 전달까지-->
 <div style="margin: 10px;" onclick="close_(); update_html();">
     <div>
         <?php
@@ -305,21 +302,11 @@
             htmlframe.document.body.setAttribute('onkeyup', 'parent.update_html(); parent.F5();');
             htmlframe.document.body.setAttribute('onclick', 'parent.close_all(); parent.update_html(); ');
             htmlframe.document.head.innerHTML = "<link rel='stylesheet' type='text/css' href='http://common.mk.co.kr/common/css/2017/chinafocus_ver2.css?1'>";
-            htmlframe.document.onkeydown = function F5(){   //parent.F5()하면 동작을 안함
-                if (event.keyCode === 116 || event.ctrlKey===1 && (event.keyCode ===82))
-                {
-                    var check=confirm('변경사항이 저장되지 않습니다.');
-                    if (check===true)
-                    {
-                        //여기에 파일 지우기 넣으면 됨
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-            };
+            <?php
+                  if (isset($_GET['art_num']))
+                  { ?>
+            htmlframe.document.body.innerHTML = '<?=$art_content['text']?>';
+            <?php }   ?>
         </script>
         <input type="hidden" name="text">
 
