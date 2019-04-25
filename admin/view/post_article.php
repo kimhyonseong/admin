@@ -356,7 +356,7 @@ if (!isset($_SESSION['class']))
                 </div>
                 <!--// 기사뷰 텍스트 -->
                 <br>
-                <input type="submit" formaction="../DB/test.php" onclick="data_submit();"
+                <input type="submit" formaction="../DB/write_article.php" onclick="data_submit();"
                        value="글쓰기 완료"><br><br>
             </div>
         </form>
