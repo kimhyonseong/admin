@@ -1,0 +1,40 @@
+a
+{
+    text-decoration: none;
+}
+a:link
+{
+    color: black;
+}
+a:visited
+{
+    color: black;
+}
+a:hover
+{
+    color: blue;
+}
+header
+{
+    position: relative;
+    margin: 10px;
+    /*border: 1px black solid;*/
+    height: 50px;
+    width: 750px;
+}
+#main_p
+{
+    float: left;
+    font-size: 30px;
+}
+#log_out
+{
+    font-size: 20px;
+    float: right;
+}
+body
+{
+    width: 750px;
+    margin: auto;
+    margin-top: 00px;
+}
