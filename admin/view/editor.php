@@ -114,8 +114,8 @@
                 <table style="background-color: white;">
                     <tr><?php
                             for ($i = 0; $i < 7; $i++) { ?>
-                                <td onclick="htmledit('<?= $id_count ?>','fontsize','<?= $i + 1 ?>');"><font
-                                            size="<?= $i + 1 ?>">가</font></td>
+                                <td onclick="htmledit('<?= $id_count ?>','fontsize','<?= $i + 1 ?>');">
+                                    <font size="<?= $i + 1 ?>">가</font></td>
                             <?php } ?>
                     </tr>
                 </table>
@@ -157,7 +157,9 @@
                     </tr>
                     <tr>
                         <td><input type="button" name="createTable" value="만들기"
-                                   onclick="makeTable('<?= $id_count ?>',parseInt(document.getElementById('row').value),parseInt(document.getElementById('data').value))">
+                                   onclick="makeTable('<?= $id_count ?>',
+                                                      parseInt(document.getElementById('row').value),
+                                                      parseInt(document.getElementById('data').value))">
                         </td>
                     </tr>
                 </table>
@@ -222,7 +224,7 @@
                     <tr>
                         <td><input placeholder="줌 퍼센트" type="text" id="zoom"></td>
                         <td><input type="button" value="확인"
-                                   onclick="zoom('<?= $id_count ?>',parseInt(document.getElementById('zoom').value)/100)">
+                                   onclick="zoom1('<?= $id_count ?>',parseInt(document.getElementById('zoom').value)/100)">
                         </td>
                     </tr>
                 </table>
@@ -317,15 +319,12 @@
                     $art_content['text']);
                 $i++;
             }
-            //$art_content['text'] = str_replace("'","\'",$art_content['text']);
             $art_content['text'] = str_replace("\n","<br>",$art_content['text']);
             ?>
             htmlframe.document.body.innerHTML = <?=json_encode($art_content['text'])?>;
             <?php }   ?>
         </script>
         <input type="hidden" name="text">
-
-
         <div id="decode_des"></div>
         <iframe id="code_edt" name="code_edt" style="display: none"></iframe>
         <script>

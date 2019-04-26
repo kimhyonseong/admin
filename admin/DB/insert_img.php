@@ -60,30 +60,35 @@
             }
         }
 
-        $img_route = array('');
-        $file_name = array('');
+        if (isset($_SESSION['img_name']))
+        {
+            $old_files = unserialize($_SESSION['img_name']);
+        }
+        else {
+            $file_name = array('');
+            $file_old_count = 0;
+        }
 
         //정상적으로 수행 시 이쪽으로 진입, 파일이름 다시 검사 후 서버 경로에 업로드
         for ($i = 0;$i < $file_count; $i++) {
             if (isset($_FILES['file']['tmp_name']) && $_FILES['file']['name'] != '') {
                 $file_name[$i] = 'none_'. $time['H'] .$time['i'] .$time['S'] .$_FILES['file']['name'][$i];
+
                 $img_route = 'http://localhost/intern/china_focus/admin/DB/'.$dir;
                 move_uploaded_file($_FILES['file']['tmp_name'][$i], './'.$dir .'/'. $file_name[$i]);
+                $img =
+                    "<br><div class='center_image' style='width:500px;'><img alt='본문 첨부 이미지' src='http://localhost/intern/china_focus/admin/DB/"
+                    .$dir.'/'.$file_name[$i] . "' border='0' hspace='0' vspace='0' width='100%'><br><div class='img_conti'>이미지 설명</div></div><br>";
+                echo '<script>parent.insert_img("'.$img.'");</script>';
             }
             if ($i + 1 == $file_count) {
-                $img = '';
+                //$img = '';
                 $_SESSION['img_route'] = $img_route; //이미지 경로만 세션 배열 저장
-                $_SESSION['img_name'] = serialize($file_name);  //이미지 파일 이름만 세션 배열 저장
-
-                for ($j=0; $j<$file_count; $j++)
-                {
-                    //로컬호스트 아이피로 바꾸기
-                    $img .=
-                        "<br><div class='center_image' style='width:500px;'><img alt='본문 첨부 이미지' src='http://localhost/intern/china_focus/admin/DB/"
-                        .$dir.'/'.$file_name[$j] . "' border='0' hspace='0' vspace='0' width='100%'><br><div class='img_conti'>이미지 설명</div></div><br>";
+                if (isset($old_files)) {
+                    $all_files = array_merge($old_files, $file_name);
+                    $_SESSION['img_name'] = serialize($all_files);  // 이전 이미지와 이번에 올린 이미지 둘다 저장
                 }
-                //echo '<script>parent.htmlframe.document.body.innerHTML = parent.htmlframe.document.body.innerHTML + "'.$img.'";</script>';
-                echo '<script>parent.insert_img("'.$img.'");</script>';
+                else $_SESSION['img_name'] = serialize($file_name);  //이미지 파일 이름만 세션 배열 저장
             }
             //파일 업로드 되고 -> 이미지가 본 화면에 출력되야함...
         }

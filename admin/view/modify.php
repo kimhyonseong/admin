@@ -27,6 +27,8 @@ else {
     echo '수정 가능';
     unset($_SESSION['img_name']);
     unset($_SESSION['img_route']);
+    //mysqli_query($conn, 'select w_name from article where art_num = ' . (int)mysqli_real_escape_string($conn, $_GET['art_num']));
+    //$_SESSION['img_name']=serialize('여기에 파일 이름 배열');
 }
 ?>
 
@@ -41,10 +43,11 @@ else {
     <link rel='stylesheet' type='text/css' href='http://common.mk.co.kr/common/css/2017/chinafocus_ver2.css'>
     <link rel="stylesheet" href="../css/header.css?v=0">
     <style>
-        #body{
+        #body {
             margin: auto;
             width: 750px;
         }
+
         input[type="number"] {
             width: 100px;
             height: 30px;
@@ -60,6 +63,7 @@ else {
             width: 600px;
             height: 30px;
         }
+
         .under_table {
             z-index: 1;
             position: relative;
@@ -80,17 +84,15 @@ else {
                 htmlframe.document.execCommand(first);
                 if (first === 'redo' || first === 'undo')
                     code_edt.document.execCommand(first);
-                else if (first ==='copy') {
+                else if (first === 'copy') {
                     var copy_string = htmlframe.getSelection().toString();
                     htmlframe.document.execCommand("copy");
                     sessionStorage.setItem('copy', copy_string);
-                }
-                else if (first ==='paste') {
+                } else if (first === 'paste') {
                     var copy_session = sessionStorage.getItem('copy');
-                    htmlframe.document.execCommand('insertText',false,copy_session);
+                    htmlframe.document.execCommand('insertText', false, copy_session);
                     htmlframe.document.body.focus();
-                }
-                else htmlframe.document.body.focus(); //포커스 됨
+                } else htmlframe.document.body.focus(); //포커스 됨
             }
             //-------------------------------------------------------------두번째 인자 있을 시 메뉴 펼치기
             else {
@@ -161,7 +163,7 @@ else {
                 table += "</tr>";
             }
             table += "</table><br>";
-            htmlframe.document.body.innerHTML = htmlframe.document.body.innerHTML + table;
+            htmlframe.document.execCommand('insertHTML',false,table);
             htmlframe.document.body.focus(); //포커스 됨
 
         }
@@ -185,7 +187,6 @@ else {
 
         //------------------------- 줌 함수
         var scale = 1;
-
         function zoom1(id, scale = 0) {
             var under = document.getElementById("under" + id);
 
@@ -225,7 +226,6 @@ else {
         function update_text() {
             (htmlframe.document.body.innerHTML) = (code_edt.document.body.innerText);
         }
-
 
         //-------------------------이미지 파일 업로드 관련 함수들
         var count = 1;
@@ -269,12 +269,19 @@ else {
                 {
                     if (url.indexOf('?v=') !== -1) {
                         var start = url.indexOf('?v='); //시작 위치
-                        var end = url.indexOf('&feature') - url.indexOf('?v='); //끝부분 위치
-                        var end_url = url.substr(start, end).replace('?v=', '');
+                        if (url.indexOf('&feature') !== -1) {
+                            var end = url.indexOf('&feature') - url.indexOf('?v='); //끝부분 위치
+                            var end_url = url.substr(start, end).replace('?v=', '');
+                        }
+                        else
+                        {
+                            end_url = url.substr(start).replace('?v=', '');
+                        }
                     } else {
                         end_url = url.substr(url.indexOf('youtu.be/')).replace('youtu.be/', '');
                     }
                     url = 'https://www.youtube.com/embed/' + end_url;
+                    alert(end_url);
                 }
                 var video = '<br><iframe width="640" height="360" src="' + url + '" frameborder="0"' +
                     ' allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br><br>';
@@ -294,14 +301,11 @@ else {
             document.form.submit();
         }
 
-        function delete_event()
-        {
-            if(confirm("정말 삭제하시겠습니까?")===true)
-            {
-                document.form.action='../DB/delete_article.php';
+        function delete_event() {
+            if (confirm("정말 삭제하시겠습니까?") === true) {
+                document.form.action = '../DB/delete_article.php';
                 document.form.submit();
-            }
-            else return;
+            } else return;
         }
     </script>
 </head>
@@ -328,8 +332,9 @@ else {
         <div class="content_left">
             <form method="post" name="form" enctype="multipart/form-data">
                 <br><br>
-                <input type="hidden" name="name" value="<?=$art_content['w_name']?>">
-                <input type="hidden" value="<?=(int)mysqli_real_escape_string($conn, $_GET['art_num'])?>" name="art_num">
+                <input type="hidden" name="name" value="<?= $art_content['w_name'] ?>">
+                <input type="hidden" value="<?= (int)mysqli_real_escape_string($conn, $_GET['art_num']) ?>"
+                       name="art_num">
                 중요도 : <input type="number" min="0" max="100" name="import" placeholder="중요도(숫자만)">
                 <br>0이상 100이하
                 <!-- 기사뷰 타이틀 -->
@@ -340,7 +345,8 @@ else {
                                                       placeholder="보조 제목" value="<?= $art_content['sub_title'] ?>"></h4>
                     <h4 class='sub_tit'>노출제목 : <input class="input_title" type="text" name="view_title"
                                                       placeholder="실제로 보이게 할 제목(짧게)"
-                                                      value="<?= $art_content['view_title'] ?>"></h4>* 노출제목은 필수가 아닙니다.<br><br>
+                                                      value="<?= $art_content['view_title'] ?>"></h4>* 노출제목은 필수가
+                    아닙니다.<br><br>
                     카테고리 : <select name="code">
                         <?php
                         include_once __DIR__ . '/../DB/DBconnect.php';
@@ -365,12 +371,12 @@ else {
                     <?php
                     include_once 'editor.php';
                     ?>
+                    <!--// 기사뷰 텍스트 -->
 
-                <!--// 기사뷰 텍스트 -->
-
-                <!--서밋-->
-                <input type="submit" formaction="../DB/modify_article.php" value="글 수정 완료" onclick="data_submit();"> <input type="button" onclick="delete_event()"  value="글 삭제"><br><br>
-                <!--//서밋--></div>
+                    <!--서밋-->
+                    <input type="submit" formaction="../DB/modify_article.php" value="글 수정 완료" onclick="data_submit();">
+                    <input type="button" onclick="delete_event()" value="글 삭제"><br><br>
+                    <!--//서밋--></div>
             </form>
         </div>
 
