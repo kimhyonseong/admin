@@ -12,6 +12,10 @@
     if (!isset($_SESSION['class']))
         header('location: ../index.php');
 
+    //$img_old_name = unserialize($_SESSION['img_name']);
+
+//var_dump($img_old_name);
+//echo '<script>alert("'.$img_old_name[0].'")</script>';
 
     //빈칸시 못 들어오게함
     if (!isset($_POST['title']) || $_POST['title'] == '' || $_POST['text'] == '' || $_POST['sub_title'] == '') {
@@ -56,19 +60,26 @@
             $img_count = count($img_old_name);
 
             for ($i = 0; $i < $img_count; $i++) {
-                //여기서 이름을 새로운 이름으로 바꾸는 작업해야되요
-                $real_img_name[$i] = substr($img_old_name[$i], strpos($img_old_name[$i], '_')); //'none_'을 '기사번호_'로 바꾸기 위해
-                $img_new_name[$i] = $art_num . $real_img_name[$i];
-
                 $img_rel_route = substr($img_abs_route, strpos($img_abs_route, '/img/')); //절대경로에서 /img/ 전까지 자르기기
-                if (is_file('.' . $img_rel_route . '/' . $img_old_name[$i])) {
-                    rename('.' . $img_rel_route . '/' . $img_old_name[$i], '.' . $img_rel_route . '/' . $img_new_name[$i]);
-                    $img_url[$i] = $img_abs_route . '/' . $img_new_name[$i];
+
+                // 기사번호_로 저장되어있으면 통과
+                if (!strpos($img_old_name[$i],$art_num.'_')) {
+                    $img_new_name[$i] = $art_num . $img_old_name[$i];
                 }
+                else {
+                    $real_img_name[$i] = substr($img_old_name[$i], strpos($img_old_name[$i], '_'));
+                    $img_new_name[$i] = $art_num . $real_img_name[$i];
+                }
+
+                if (is_file('.' . $img_rel_route . '/' . $img_old_name[$i])) {  //'none_'을 '기사번호_'로 바꾸는 작업 오늘꺼만 바꾸는데...
+                    rename('.' . $img_rel_route . '/' . $img_old_name[$i], '.' . $img_rel_route . '/' . $img_new_name[$i]);
+                }
+                $img_url[$i] = $img_abs_route . '/' . $img_new_name[$i];
+                echo $img_url[$i].'<br>';
                 $text = str_replace($img_abs_route . '/' . $img_old_name[$i], $img_abs_route . '/' . $img_new_name[$i], $text); // -> 여기서 뭐가 잘못되었음
             }
+            //-------------------------------------------------------------- 이미지 이름 바꾸기
         }
-        //echo htmlspecialchars($text).'<br><br>';
 
         $update_article = 'update article set code=' . $code . ',title=\''.$title.'\',sub_title=\''.$sub_title.'\',
                                    view_title=\''.$view_title.'\',text=\''.$text.'\',import='.$import.',
@@ -78,7 +89,10 @@
 
         if (isset($_SESSION['img_name'])) {
             for ($i = 0; $i < $img_count; $i++) {
-                $insert_img = 'insert into img(img_url,art_num,img_order) values(\'' . $img_url[$i] . '\',' . $art_num . ','.$i.')';
+                $insert_img = 'insert into img(img_url,art_num,img_order) values(\'' .
+                    $img_url[$i] .
+                    '\',' . $art_num
+                    . ','.$i.')';
                 mysqli_query($conn, $insert_img);
             }
         }

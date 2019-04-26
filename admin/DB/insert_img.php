@@ -60,6 +60,7 @@
             }
         }
 
+        //이전에 이미지를 올렸는지 확인하기
         if (isset($_SESSION['img_name']))
         {
             $old_files = unserialize($_SESSION['img_name']);

@@ -27,7 +27,32 @@ else {
     echo '수정 가능';
     unset($_SESSION['img_name']);
     unset($_SESSION['img_route']);
-    //mysqli_query($conn, 'select w_name from article where art_num = ' . (int)mysqli_real_escape_string($conn, $_GET['art_num']));
+    $art_num = (int)mysqli_real_escape_string($conn, $_GET['art_num']);
+    mysqli_query($conn, 'select w_name from article where art_num = ' . $art_num);
+    $img_time_query = mysqli_query($conn, 'select date_format(now(),"%Y") Y,
+                                              date_format(now(),"%m") m,
+                                              date_format(now(),"%d") d,
+                                              date_format(now(),"%H") H,
+                                              date_format(now(),"%i") i,
+                                              date_format(now(),"%S") S,
+                                              img_url from img where art_num = ' . $art_num );
+    if (mysqli_num_rows($img_time_query) != 0) {
+        $i=0;
+        while ($img_time = mysqli_fetch_array($img_time_query)) {
+            $dir = 'img/' . $img_time['Y'] . '/' . $img_time['m'] . '/' . $img_time['d'];
+            $_SESSION['img_route'] = 'http://localhost/intern/china_focus/admin/DB/' . $dir;
+
+            //strpos($img_time['img_url'],$art_num.'_')
+            //이미지는 기사번호_분초이름.jpg 형식으로 저장되어있음
+            $img_file_names[$i] = substr($img_time['img_url'],strpos($img_time['img_url'],$art_num.'_'));
+
+            echo '<script>alert("'.$img_file_names[$i].'")</script>';
+            if ( mysqli_num_rows($img_time_query) ==$i+1 ){
+                $_SESSION['img_name'] = serialize($img_file_names);
+            }
+            $i++;
+        }
+    }
     //$_SESSION['img_name']=serialize('여기에 파일 이름 배열');
 }
 ?>
