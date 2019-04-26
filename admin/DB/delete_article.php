@@ -24,7 +24,7 @@
         $delete_img_file = mysqli_query($conn,'select img_url from img where art_num='.$art_num);
         while ($delete_img_file = mysqli_fetch_array($delete_img_file))
         {
-            $img_name=substr($delete_img_file['img_url'],strpos($delete_img_file['img_url'],'/img/'));
+            $img_name = substr($delete_img_file['img_url'],strpos($delete_img_file['img_url'],'/img/'));
             unlink('.'.$img_name);
         }
         //관련기사, 이미지, 기사 순으로 삭제(외래키 때문에 기사는 마지막에 동작해야함)

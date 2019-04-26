@@ -37,7 +37,7 @@ else {
     $w_name = mysqli_real_escape_string($conn, $_SESSION['name']);
     $w_email = mysqli_real_escape_string($conn, $_SESSION['email']);
 
-    if (isset($_SESSION['img_route'])) {
+    if (isset($_SESSION['img_name'])) {
         //-------------------------------------------------------------- 이미지 이름 바꾸기
         $img_abs_route = ($_SESSION['img_route']);
         $img_old_name = unserialize($_SESSION['img_name']);
@@ -75,6 +75,8 @@ else {
             mysqli_query($conn, $insert_img);
         }
     }
+    unset($_SESSION['img_name']);
+    unset($_SESSION['img_route']);
     echo '<script>alert("기사가 작성되었습니다."); location.href="../view/article_view.php?art_num=' . $art_num . '"</script>';
 }
 

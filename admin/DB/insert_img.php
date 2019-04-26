@@ -62,8 +62,9 @@
 
         $img_route = array('');
         $file_name = array('');
+
         //정상적으로 수행 시 이쪽으로 진입, 파일이름 다시 검사 후 서버 경로에 업로드
-        for ($i = 0; $i < $file_count; $i++) {
+        for ($i = 0;$i < $file_count; $i++) {
             if (isset($_FILES['file']['tmp_name']) && $_FILES['file']['name'] != '') {
                 $file_name[$i] = 'none_'. $time['H'] .$time['i'] .$time['S'] .$_FILES['file']['name'][$i];
                 $img_route = 'http://localhost/intern/china_focus/admin/DB/'.$dir;
@@ -82,7 +83,7 @@
                         .$dir.'/'.$file_name[$j] . "' border='0' hspace='0' vspace='0' width='100%'><br><div class='img_conti'>이미지 설명</div></div><br>";
                 }
                 //echo '<script>parent.htmlframe.document.body.innerHTML = parent.htmlframe.document.body.innerHTML + "'.$img.'";</script>';
-                echo '<script> parent.insert_img("'.$img.'");</script>';
+                echo '<script>parent.insert_img("'.$img.'");</script>';
             }
             //파일 업로드 되고 -> 이미지가 본 화면에 출력되야함...
         }

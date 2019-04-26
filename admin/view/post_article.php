@@ -8,6 +8,8 @@
 session_start();
 if (!isset($_SESSION['class']))
     header('location: ../index.php');
+unset($_SESSION['img_name']);
+unset($_SESSION['img_route']);
 ?>
 <!DOCTYPE html>
 <html lang="ko">
@@ -55,33 +57,6 @@ if (!isset($_SESSION['class']))
         }
     </style>
     <script>
-
-        function F5(){
-            //alert(event.keyCode);
-            if (event.keyCode === 116 || event.ctrlKey===1 && (event.keyCode ===82))
-            {
-                var check=confirm('변경사항이 저장되지 않습니다.');
-                if (check===true)
-                {
-                    //여기에 파일 지우기 넣으면 됨
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-        //document.onkeydown=F5;
-        window.onbeforeunload = function (e) {
-            e = e || window.event;
-            // For IE<8 and Firefox prior to version 4
-            if (e) {
-                e.returnValue = '페이지를 닫습니다.';
-            }
-            // For Chrome, Safari, IE8+ and Opera 12+
-            return '페이지를 닫습니다.';
-        };
         function htmledit(id, first, second = '0') {
             //첫번째 인자만 있을 시--------------- 글에 적용, 다른 열려있는 메뉴들 다 접기
             if (second == null || second === '0') {
@@ -199,7 +174,6 @@ if (!isset($_SESSION['class']))
 
             htmlframe.document.body.style.zoom = scale;
             htmlframe.document.body.focus();
-
         }
 
         //--------------------------- html 편집기 사용
@@ -331,7 +305,7 @@ if (!isset($_SESSION['class']))
                     <h4 class='sub_tit'> 부제목 : <input class="input_title" type="text" name="sub_title"
                                                       placeholder="보조 제목"></h4>
                     <h4 class='sub_tit'>노출제목 : <input class="input_title" type="text" name="view_title"
-                                                      placeholder="실제로 보이게 할 제목(짧게)"></h4><br>
+                                                      placeholder="실제로 보이게 할 제목(짧게)"></h4>* 노출제목은 필수가 아닙니다.<br><br>
                     카테고리 : <select name="code">
                         <?php
                         include_once __DIR__ . '/../DB/DBconnect.php';
@@ -341,7 +315,6 @@ if (!isset($_SESSION['class']))
                         }
                         ?>
                     </select>
-                    <br>* 노출제목은 필수가 아닙니다.
                 </div>
                 <!--// 기사뷰 타이틀 -->
                 <!-- 기사뷰 텍스트 -->
@@ -349,6 +322,7 @@ if (!isset($_SESSION['class']))
                     <div style="font-size: 15px;">
                         주의사항<br>
                         &nbsp;&nbsp;이미지 확장자는 (jpg,jpeg,png,gif)만 가능합니다.<br>
+                        &nbsp;&nbsp;이미지는 한꺼번에 첨부해주세요.<br>
                     </div>
                     <?php
                     include_once 'editor.php';
