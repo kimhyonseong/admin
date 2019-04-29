@@ -74,8 +74,7 @@ if (!isset($_SESSION['class']))
 
                     //첫번째 줄바꿈 찾고 그 줄바꿈의 위치까지만 보여줌
                     $summary = $sql_result['text'];
-                    for($i=0; $i<10; $i++)
-                        $summary=str_replace("<!--img$i-->",'',$summary);
+                    $summary = strip_tags($summary);
 
                     if (mb_strlen($summary,'UTF-8')>20)
                         $summary = mb_substr($summary, 0, strpos($summary, "\n",20));

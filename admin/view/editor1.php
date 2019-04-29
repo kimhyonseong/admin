@@ -23,9 +23,10 @@
             for ($j = 1; $j < count($edt); $j++) {
                 ?>
                 <!-------------------에디터 기능1---------------->
-                <div style="margin:auto; display: inline-block"><img id="<?= ++$id_count ?>" alt="" style="position: relative"
-                                      title="<?= $edt[$j] ?>" src="edt_img/edit_<?= $j ?>.gif"
-                                      onclick="htmledit(this.id,'<?= $edt[$j] ?>','0');">
+                <div style="margin:auto; display: inline-block"><img id="<?= ++$id_count ?>" alt=""
+                                                                     style="position: relative" title="<?= $edt[$j] ?>"
+                                                                     src="edt_img/edit_<?= $j ?>.gif"
+                                                                     onclick="htmledit(this.id,'<?= $edt[$j] ?>','0');">
                 </div>
                 <div class="under" id="under<?= $id_count ?>" style="display:none; position: absolute;"></div>
                 <?php
@@ -36,10 +37,11 @@
             for ($j = 0; $j < count($item1); $j++) {
                 ?>
                 <!-------------------에디터 기능2---------------->
-                <div style="margin:auto; display: inline-block"><img id="<?= ++$id_count ?>" alt="" style="position: relative"
-                                      title="<?= $item1[$j] ?>"
-                                      src="edt_img/item_<?= $j + 1 ?>.gif"
-                                      onclick="htmledit(this.id,'<?= $item1[$j] ?>','0');">
+                <div style="margin:auto; display: inline-block"><img id="<?= ++$id_count ?>" alt=""
+                                                                     style="position: relative"
+                                                                     title="<?= $item1[$j] ?>"
+                                                                     src="edt_img/item_<?= $j + 1 ?>.gif"
+                                                                     onclick="htmledit(this.id,'<?= $item1[$j] ?>','0');">
                 </div>
                 <div class="under" id="under<?= $id_count ?>" style="display:none; position: absolute;"></div>
                 <?php
@@ -302,7 +304,6 @@
             htmlframe.document.body.setAttribute('id', 'body');
             htmlframe.document.body.setAttribute('onkeyup', 'parent.update_html(); parent.F5();');
             htmlframe.document.body.setAttribute('onclick', 'parent.close_all(); parent.update_html(); ');
-            htmlframe.document.head.innerHTML = "<link rel='stylesheet' type='text/css' href='http://common.mk.co.kr/common/css/2017/chinafocus_ver2.css?1'>";
             <?php
                     //수정 시에 내용 불러오기
             if (isset($_GET['art_num']) && isset($art_content))

@@ -21,8 +21,8 @@
         }
 
         //이미지 파일 삭제 이미지 DB삭제 전에 실행해야함
-        $delete_img_file = mysqli_query($conn,'select img_url from img where art_num='.$art_num);
-        while ($delete_img_file = mysqli_fetch_array($delete_img_file))
+        $delete_img_file_query = mysqli_query($conn,'select img_url from img where art_num=' . $art_num);
+        while ($delete_img_file = mysqli_fetch_array($delete_img_file_query))
         {
             $img_name = substr($delete_img_file['img_url'],strpos($delete_img_file['img_url'],'/img/'));
             unlink('.'.$img_name);

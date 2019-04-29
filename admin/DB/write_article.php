@@ -46,11 +46,12 @@ else {
         $img_count = count($img_old_name);
 
         for ($i = 0; $i < $img_count; $i++) {
-            //여기서 이름을 새로운 이름으로 바꾸는 작업해야되요
-            $real_img_name[$i] = substr($img_old_name[$i], strpos($img_old_name[$i], '_')); //'none_'을 '기사번호_'로 바꾸기 위해
+            //'none_파일'을 '기사번호_파일'로 바꾸기 위해 '_'을 기준으로 자름 -> '_파일'
+            $real_img_name[$i] = substr($img_old_name[$i], strpos($img_old_name[$i], '_'));
             $img_new_name[$i] = $art_num . $real_img_name[$i];
 
-            $img_rel_route = substr($img_abs_route, strpos($img_abs_route, '/img/')); //절대경로에서 /img/ 전까지 자르기기
+            //절대경로에서 /img/부터 끝까지 자르기 -> http://localhost/intern/china_focus/admin/DB
+            $img_rel_route = substr($img_abs_route, strpos($img_abs_route, '/img/'));
             if (is_file('.' . $img_rel_route . '/' . $img_old_name[$i])) {
                 rename('.' . $img_rel_route . '/' . $img_old_name[$i], '.' . $img_rel_route . '/' . $img_new_name[$i]);
                 $img_url[$i] = $img_abs_route.'/'.$img_new_name[$i];
@@ -59,6 +60,7 @@ else {
         }
         //-------------------------------------------------------------- 이미지 이름 바꾸기
     }
+
     $insert_article = 'insert into article(art_num,code,title,
                                                 sub_title,view_title,text,
                                                 url,copyright,import,
